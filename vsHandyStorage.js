@@ -4,24 +4,25 @@ angular.module('vsHandyStorage', ['ngStorage'])
             restrict: 'A',
             controller: function($scope, $element, $attrs) {
                 var storageName = $attrs.vsLocalStorage;
-                var storageOptions = {};
-                storageOptions[storageName] = {};
+				var storage = $localStorage;
 				
 			    function create() {
-				    $localStorage.$default(storageOptions);
+				    var storageOptions = {};
+                    storageOptions[storageName] = {};
+				    storage.$default(storageOptions);
 				};
 				function isCreated() {
-				    return !!$localStorage[storageName]; //unsafe
+				    return !!storage[storageName]; //unsafe
 				};
 				
 				this.put = function(key, value) {
 				    if(!isCreated())
 					    create();
-				    $localStorage[storageName][key] = value;
+				    storage[storageName][key] = value;
 				};
 				this.get = function(key) {
-				    if (isCreated() && (key in $localStorage[storageName])) {
-                        return $localStorage[storageName][key];
+				    if (isCreated()) {
+                        return storage[storageName][key];
 					} else { 
 					    return undefined;
 					}
@@ -37,16 +38,16 @@ angular.module('vsHandyStorage', ['ngStorage'])
                 var vsLocalStorage = controllers[0];
                 var ngModel = controllers[1];
 
-                var initValue = vsLocalStorage.get(attrs.ngModel);
+                var initValue = vsLocalStorage.get(attrs.name);
                 if (initValue !== undefined) {
                     scope[attrs.ngModel] = initValue;
                 }                
 				
                 scope.$watch(attrs.ngModel, function() {
-                    if(ngModel.$valid) {
- 					   vsLocalStorage.put(attrs.ngModel, ngModel.$modelValue);
+                    if(ngModel.$valid && ngModel.$dirty) {
+ 					   vsLocalStorage.put(attrs.name, ngModel.$modelValue);
                     }
                 });
-            }
+            } 
         }
     });
