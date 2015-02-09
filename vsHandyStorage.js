@@ -1,35 +1,43 @@
 angular.module('vsHandyStorage', ['ngStorage'])
-    .directive('vsLocalStorage', function($localStorage) {
+    .factory('vsStorageFactory', ['$localStorage', function($localStorage) {
+		function createScope(scopeName) {
+		    var scope = {};
+		    scope[scopeName] = {};
+			return scope;
+		}		
+		function initStorage(scope) {
+		    $localStorage.$default(scope);
+		}
+		
+		function create(name) {
+		    if (name in $localStorage)
+			    return $localStorage[name];
+		    
+			var scope = createScope(name);
+			initStorage(scope);
+			
+			return $localStorage[name];
+		}
+		
+		return {
+		    create: create
+		};
+	 }])	 
+    .directive('vsLocalStorage', ['vsStorageFactory', function(vsStorageFactory) {
         return {
             restrict: 'A',
             controller: function($scope, $element, $attrs) {
-                var storageName = $attrs.vsLocalStorage;
-				var storage = $localStorage;
-				
-			    function create() {
-				    var storageOptions = {};
-                    storageOptions[storageName] = {};
-				    storage.$default(storageOptions);
-				};
-				function isCreated() {
-				    return !!storage[storageName]; //unsafe
-				};
-				
+                var storage = vsStorageFactory.create($attrs.vsLocalStorage);
+			
 				this.put = function(key, value) {
-				    if(!isCreated())
-					    create();
-				    storage[storageName][key] = value;
-				};
+				    storage[key] = value;
+                };
 				this.get = function(key) {
-				    if (isCreated()) {
-                        return storage[storageName][key];
-					} else { 
-					    return undefined;
-					}
+				    return storage[key];
                 };
             }
         }
-    })
+    }])
 	.directive('vsLinkStorage', function() {
         return {
             restrict: 'A',
@@ -37,10 +45,11 @@ angular.module('vsHandyStorage', ['ngStorage'])
             link:function(scope, element, attrs, controllers) {
                 var vsLocalStorage = controllers[0];
                 var ngModel = controllers[1];
-
+	
                 var initValue = vsLocalStorage.get(attrs.name);
                 if (initValue !== undefined) {
-                    scope[attrs.ngModel] = initValue;
+                    ngModel.$setViewValue(initValue);
+                    ngModel.$render();
                 }                
 				
                 scope.$watch(attrs.ngModel, function() {
