@@ -53,7 +53,7 @@ angular.module('vsHandyStorage', ['ngStorage'])
                 }                
 				
                 scope.$watch(attrs.ngModel, function() {
-                    if(ngModel.$valid && ngModel.$dirty) {
+                    if(ngModel.$dirty) {
  					   vsLocalStorage.put(attrs.name, ngModel.$modelValue);
                     }
                 });
