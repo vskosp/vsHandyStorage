@@ -10,7 +10,7 @@ You can also bind several forms with one storage.
 <h2>Installation</h2>
 ```html
 <script src="https://rawgithub.com/gsklee/ngStorage/master/ngStorage.js"></script>	
-<script src="https://rawgit.com/polkos1991/vsHandyStorage/v0.1.1/vsHandyStorage.js"></script>
+<script src="https://rawgit.com/polkos1991/vsHandyStorage/v0.2.0/vsHandyStorage.js"></script>
 ```
 <h2>Usage</h2>
 1) Add module dependency:
