@@ -3,8 +3,8 @@ Handy link your form with local storage.
 # Specification
 You can bind your form with local storage in 2 steps:
 
-1. declare directive <b>vs-local-storage</b>="<b>name</b>" on your form - it creates storage with specified name.		
-2. bind any form element with created storage through directive <b>vs-link-storage</b> declared on element.	
+1. declare <b>vs-local-storage</b> directive on your form - it creates storage with specified name;		
+2. bind any form element with created storage through the <b>vs-link-storage</b> directive declared on element.	
 	
 You can also bind several forms with one storage.
 # Installation
@@ -17,15 +17,16 @@ You can also bind several forms with one storage.
 ``` javascript
 angular.module('yourApp', ['vsHandyStorage']);
 ```
-2) Create storage and set its name through the directive <b>vs-local-storage</b>:
+2) Create storage and set its name through the <b>vs-local-storage</b> directive:
 ``` html
 <form vs-local-storage="storageName">
 </form>
 ```
-3) Bind any form element with created storage through the directive <b>vs-link-storage</b>:
+3) Bind any form element with created storage through the <b>vs-link-storage</b> directive:
 ``` html
 <form vs-local-storage="storageName">
     <input ng-model="name" type="text" name="name" vs-link-storage>
 </form>
 ```
-<b>Important</b>, that the attribute <i>name</i> on the form element matches the field name in the storage.
+<b>Important</b>, that the attribute <i>name</i> on the form element matches the field name in the storage.			
+<b>Important</b>, that <i>vs-link-storage</i> directive requires declaration of <i>ng-model</i> directive.
