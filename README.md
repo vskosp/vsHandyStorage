@@ -1,18 +1,18 @@
 # vsHandyStorage
 Handy link your form with local storage.
-# Specification
+<h2>Specification</h2>
 You can bind your form with local storage in 2 steps:
 
 1. declare <b>vs-local-storage</b> directive on your form - it creates storage with specified name;		
 2. bind any form element with created storage through the <b>vs-link-storage</b> directive declared on element.	
 	
 You can also bind several forms with one storage.
-# Installation
+<h2>Installation</h2>
 ```html
 <script src="https://rawgithub.com/gsklee/ngStorage/master/ngStorage.js"></script>	
 <script src="https://rawgit.com/polkos1991/vsHandyStorage/v0.1.1/vsHandyStorage.js"></script>
 ```
-# Usage
+<h2>Usage</h2>
 1) Add module dependency:
 ``` javascript
 angular.module('yourApp', ['vsHandyStorage']);
