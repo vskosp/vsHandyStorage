@@ -29,9 +29,15 @@ angular.module('vsHandyStorage', ['ngStorage'])
 	 }])
     .factory('vsAbstractStorageModel', function() {
         function AbstractStorage() {
+		    function isValid(value) {
+			    var isNull = (value===null);
+				var isEmpty = ((""+value).trim()==="");
+				return !isNull && !isEmpty;
+			}
+			
 		    this.storage = {};
             this.put = function (key, value) {
-                this.storage[key] = value;
+                this.storage[key] = isValid(value) ? value : undefined;
             };
             this.get = function (key) {
                 return this.storage[key];
