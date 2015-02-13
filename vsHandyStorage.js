@@ -60,7 +60,10 @@ angular.module('vsHandyStorage', ['ngStorage'])
         return {
             restrict: 'A',
             controller: function($scope, $element, $attrs) {
-                var storage = new vsLocalStorageModel($attrs.vsLocalStorage);    
+                var storageName = $attrs.vsLocalStorage;
+	      		if(!storageName)
+                    throw new Error("Bad storage name");
+				var storage = new vsLocalStorageModel(storageName);    
 				
 				this.storage = storage;
             }
@@ -70,7 +73,10 @@ angular.module('vsHandyStorage', ['ngStorage'])
         return {
             restrict: 'A',
             controller: function($scope, $element, $attrs) {
-                var storage = new vsSessionStorageModel($attrs.vsSessionStorage);    
+			    var storageName = $attrs.vsSessionStorage;
+	      		if(!storageName)
+                    throw new Error("Bad storage name");
+                var storage = new vsSessionStorageModel(storageName);    
 				
 				this.storage = storage;
             }
@@ -82,8 +88,10 @@ angular.module('vsHandyStorage', ['ngStorage'])
             require: ['?^^vsLocalStorage', '?^^vsSessionStorage', 'ngModel'],
             link:function(scope, element, attrs, controllers) {
 			    var storageCtrl = controllers[0] || controllers[1];
+				if (!storageCtrl) 
+			        throw new Error("Storage is undefined");
                 var storage = storageCtrl.storage;
-                var ngModel = controllers[2]; 
+                var ngModel = controllers[2];
 	
                 var initValue = storage.get(attrs.name);
                 if (initValue !== undefined) {
