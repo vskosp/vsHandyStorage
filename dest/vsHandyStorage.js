@@ -7,7 +7,8 @@
 'use strict';
 
 (function() {
-
+    /*! ngStorage 0.3.0 | Copyright (c) 2013 Gias Kay Lee | MIT License */
+	
     /**
      * @ngdoc overview
      * @name ngStorage
@@ -109,137 +110,137 @@
 })();
 
 (function (window, document) {
-'use strict';
-angular.module('vsBrowserStorageAPI', ['ngStorage']);
-angular.module('vsBrowserStorageAPI')
-	.factory('ngStorageAPI', ['$localStorage', '$sessionStorage', function($localStorage, $sessionStorage) {
-		function ngStorageAPI(ngStorageService) {
-		    this._ngStorageService = ngStorageService;
-		}
-		ngStorageAPI.prototype.set =  function (key, value) {
-		    this._ngStorageService[key] = value;
-		};
-		ngStorageAPI.prototype.get = function (key) {
-		    return this._ngStorageService[key];
-		};
-		ngStorageAPI.LOCAL_STORAGE_SERVICE = $localStorage;
-		ngStorageAPI.SESSION_STORAGE_SERVICE = $sessionStorage;
-		
-		return ngStorageAPI;
-	}]);
-angular.module('vsBrowserStorageAPI')
-	.factory('vsLocalStorageAPI', ['ngStorageAPI', function(ngStorageAPI) {
-		var storageService = ngStorageAPI.LOCAL_STORAGE_SERVICE,
-		    vsStorageAPI = new ngStorageAPI(storageService);
-		return vsStorageAPI;
-	}]);
-angular.module('vsBrowserStorageAPI')
-	.factory('vsSessionStorageAPI', ['ngStorageAPI', function(ngStorageAPI) {
-		var storageService = ngStorageAPI.SESSION_STORAGE_SERVICE,
-		    vsStorageAPI = new ngStorageAPI(storageService);
-		return vsStorageAPI;
-	}]);
-angular.module('vsHandyStorage', ['vsBrowserStorageAPI']);
-angular.module('vsHandyStorage')
-	.factory('vsStorageModelValidator', function() {
-	    function isObjectOnly(value) {
-		    return Object.prototype.toString.call(value) === '[object Object]';
-		}		
-		function isValid(model) {
-			return isObjectOnly(model);
-		}
-		function isValueValid(value) {
-			var isNull = (value===null),
-			    isEmpty = ((""+value).trim()==="");
-			return !isNull && !isEmpty;
-		}
-		
-		return {
-		    isValid: isValid,
-		    isValueValid: isValueValid
-		};
-	});
-
-angular.module('vsHandyStorage')
-	.factory('vsStorageControllerProvider', ['vsStorageModelValidator', function(vsStorageModelValidator) {
-		function isBrowserStorageAPIValid(api) {
-		    return angular.isDefined(api.set) && angular.isDefined(api.get);
-		}
-		function getController(directiveName, browserStorageAPI) {
-			if(!isBrowserStorageAPIValid(browserStorageAPI))
-                throw new Error("browserStorageAPI should have setter and getter");
-			
-			function storageController($scope, $element, $attrs) {
-				var storageName = $attrs[directiveName],
-				    storageModel = browserStorageAPI.get(storageName);
-				if(!storageName)
-                    throw new Error("Bad storage name");
-				if(!vsStorageModelValidator.isValid(storageModel)) {
-				    var storageDefaultModel = {};
-					browserStorageAPI.set(storageName, storageDefaultModel);
-					storageModel = browserStorageAPI.get(storageName);
-				}
-						    
-				this.put = function (key, value) {
-				    storageModel[key] = vsStorageModelValidator.isValueValid(value) ? value : undefined;
-				};
-				this.get = function (key) {
-				    return storageModel[key];
-				};
-            }
-			
-			return storageController;
-		}
-		
-		return {
-		    getController: getController
-		};
-    }]);
-angular.module('vsHandyStorage')
-	.directive('vsLocalStorage', ['vsStorageControllerProvider', 'vsLocalStorageAPI', function(vsStorageControllerProvider, vsLocalStorageAPI) {
-		return {
-            restrict: 'A',
-            controller: ['$scope', '$element', '$attrs', vsStorageControllerProvider.getController('vsLocalStorage', vsLocalStorageAPI)]
-        };
-    }]);
-angular.module('vsHandyStorage')
-	.directive('vsSessionStorage', ['vsStorageControllerProvider', 'vsSessionStorageAPI', function(vsStorageControllerProvider, vsSessionStorageAPI) {  						   
-		return {
-            restrict: 'A',
-            controller: ['$scope', '$element', '$attrs', vsStorageControllerProvider.getController('vsSessionStorage', vsSessionStorageAPI)]
-        };	
-    }]);
-angular.module('vsHandyStorage')
-	.directive('vsLinkStorage', function() {
-        return {
-            restrict: 'A',
-            require: ['?^^vsLocalStorage', '?^^vsSessionStorage', 'ngModel'],
-            link: function(scope, element, attrs, controllers) {
-			    var storageCtrl = controllers[0] || controllers[1],
-				    ngModel = controllers[2],
-					storageModelKey = attrs.name,
-                    storageModelValue;
-				
-				if (!storageCtrl) 
-			        throw new Error("Storage is undefined");
-				
-				storageModelValue = storageCtrl.get(storageModelKey);
-				
-				(function initView(storageModelValue) {
-                    if (storageModelValue !== undefined) {
-                        ngModel.$setViewValue(storageModelValue);
-                        ngModel.$render();  
-                    }
-				})(storageModelValue);
-				
-				function updateStorageModel(modelValue) {
-				    if(ngModel.$dirty) {
- 					   storageCtrl.put(storageModelKey, modelValue);
-                    }
-				}
-
-                scope.$watch(attrs.ngModel, updateStorageModel);
-            } 
-        };
-    });
+   'use strict';
+    angular.module('vsBrowserStorageAPI', ['ngStorage']);
+    angular.module('vsBrowserStorageAPI')
+    	.factory('ngStorageAPI', ['$localStorage', '$sessionStorage', function($localStorage, $sessionStorage) {
+    		function ngStorageAPI(ngStorageService) {
+    		    this._ngStorageService = ngStorageService;
+    		}
+    		ngStorageAPI.prototype.set =  function (key, value) {
+    		    this._ngStorageService[key] = value;
+    		};
+    		ngStorageAPI.prototype.get = function (key) {
+    		    return this._ngStorageService[key];
+    		};
+    		ngStorageAPI.LOCAL_STORAGE_SERVICE = $localStorage;
+    		ngStorageAPI.SESSION_STORAGE_SERVICE = $sessionStorage;
+    		
+    		return ngStorageAPI;
+    	}]);
+    angular.module('vsBrowserStorageAPI')
+    	.factory('vsLocalStorageAPI', ['ngStorageAPI', function(ngStorageAPI) {
+    		var storageService = ngStorageAPI.LOCAL_STORAGE_SERVICE,
+    		    vsStorageAPI = new ngStorageAPI(storageService);
+    		return vsStorageAPI;
+    	}]);
+    angular.module('vsBrowserStorageAPI')
+    	.factory('vsSessionStorageAPI', ['ngStorageAPI', function(ngStorageAPI) {
+    		var storageService = ngStorageAPI.SESSION_STORAGE_SERVICE,
+    		    vsStorageAPI = new ngStorageAPI(storageService);
+    		return vsStorageAPI;
+    	}]);
+    angular.module('vsHandyStorage', ['vsBrowserStorageAPI']);
+    angular.module('vsHandyStorage')
+    	.factory('vsStorageModelValidator', function() {
+    	    function isObjectOnly(value) {
+    		    return Object.prototype.toString.call(value) === '[object Object]';
+    		}		
+    		function isValid(model) {
+    			return isObjectOnly(model);
+    		}
+    		function isValueValid(value) {
+    			var isNull = (value===null),
+    			    isEmpty = ((""+value).trim()==="");
+    			return !isNull && !isEmpty;
+    		}
+    		
+    		return {
+    		    isValid: isValid,
+    		    isValueValid: isValueValid
+    		};
+    	});
+    
+    angular.module('vsHandyStorage')
+    	.factory('vsStorageControllerProvider', ['vsStorageModelValidator', function(vsStorageModelValidator) {
+    		function isBrowserStorageAPIValid(api) {
+    		    return angular.isDefined(api.set) && angular.isDefined(api.get);
+    		}
+    		function getController(directiveName, browserStorageAPI) {
+    			if(!isBrowserStorageAPIValid(browserStorageAPI))
+                    throw new Error("browserStorageAPI should have setter and getter");
+    			
+    			function storageController($scope, $element, $attrs) {
+    				var storageName = $attrs[directiveName],
+    				    storageModel = browserStorageAPI.get(storageName);
+    				if(!storageName)
+                        throw new Error("Bad storage name");
+    				if(!vsStorageModelValidator.isValid(storageModel)) {
+    				    var storageDefaultModel = {};
+    					browserStorageAPI.set(storageName, storageDefaultModel);
+    					storageModel = browserStorageAPI.get(storageName);
+    				}
+    						    
+    				this.put = function (key, value) {
+    				    storageModel[key] = vsStorageModelValidator.isValueValid(value) ? value : undefined;
+    				};
+    				this.get = function (key) {
+    				    return storageModel[key];
+    				};
+                }
+    			
+    			return storageController;
+    		}
+    		
+    		return {
+    		    getController: getController
+    		};
+        }]);
+    angular.module('vsHandyStorage')
+    	.directive('vsLocalStorage', ['vsStorageControllerProvider', 'vsLocalStorageAPI', function(vsStorageControllerProvider, vsLocalStorageAPI) {
+    		return {
+                restrict: 'A',
+                controller: ['$scope', '$element', '$attrs', vsStorageControllerProvider.getController('vsLocalStorage', vsLocalStorageAPI)]
+            };
+        }]);
+    angular.module('vsHandyStorage')
+    	.directive('vsSessionStorage', ['vsStorageControllerProvider', 'vsSessionStorageAPI', function(vsStorageControllerProvider, vsSessionStorageAPI) {  						   
+    		return {
+                restrict: 'A',
+                controller: ['$scope', '$element', '$attrs', vsStorageControllerProvider.getController('vsSessionStorage', vsSessionStorageAPI)]
+            };	
+        }]);
+    angular.module('vsHandyStorage')
+    	.directive('vsLinkStorage', function() {
+            return {
+                restrict: 'A',
+                require: ['?^^vsLocalStorage', '?^^vsSessionStorage', 'ngModel'],
+                link: function(scope, element, attrs, controllers) {
+    			    var storageCtrl = controllers[0] || controllers[1],
+    				    ngModel = controllers[2],
+    					storageModelKey = attrs.name,
+                        storageModelValue;
+    				
+    				if (!storageCtrl) 
+    			        throw new Error("Storage is undefined");
+    				
+    				storageModelValue = storageCtrl.get(storageModelKey);
+    				
+    				(function initView(storageModelValue) {
+                        if (storageModelValue !== undefined) {
+                            ngModel.$setViewValue(storageModelValue);
+                            ngModel.$render();  
+                        }
+    				})(storageModelValue);
+    				
+    				function updateStorageModel(modelValue) {
+    				    if(ngModel.$dirty) {
+     					   storageCtrl.put(storageModelKey, modelValue);
+                        }
+    				}
+    
+                    scope.$watch(attrs.ngModel, updateStorageModel);
+                } 
+            };
+        });
 })(window, document);
