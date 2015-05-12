@@ -12,6 +12,7 @@ bower install vs-handy-storage
 ```
 ## Usage | [Demo](http://plnkr.co/edit/iX24ba?p=preview)
 1) Add vsHandyStorage.js to your index.html
+
 2) Add module dependency:
 ``` javascript
 angular.module('yourApp', ['vsHandyStorage']);
