@@ -1,22 +1,38 @@
 {
   "name": "vsHandyStorage",
-  "version": "1.0.0-beta.1",
+  "version": "1.0.0-beta.2",
+  "main": "dest/vsHandyStorage.js",
   "homepage": "https://github.com/vskosp/vsHandyStorage",
   "authors": [
     "K.Polishchuk"
   ],
   "description": "Handy link data in html form with local or session storage",
   "keywords": [
+    "angular",
+	"angularjs",
+	"cookie",
     "local",
     "session",
     "storage",
-    "local storage",
-    "session storage"
+    "localstorage",
+    "sessionstorage",
+	"ngstorage",
+	"vs",
+	"handy",
+	"handystorage",
+	"vshandystorage"
   ],
   "license": "MIT",
   "ignore": [
+  	".bowerrc",
+	".gitignore",
+	"package.json",
+	"Gruntfile.js",
+	"karma.conf.js",
     "node_modules",
-    "bower_components"
+    "bower_components",
+	"src",
+	"test"
   ],
   "dependencies": {
     "ngstorage": ">=0.3.0",
