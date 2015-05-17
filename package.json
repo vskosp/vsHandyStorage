@@ -1,6 +1,6 @@
 {
   "name": "vsHandyStorage",
-  "version": "1.0.0-beta.3",
+  "version": "1.0.0-beta.2",
   "description": "Handy link data in html form with local or session storage",
   "repository": {
     "type": "git",
